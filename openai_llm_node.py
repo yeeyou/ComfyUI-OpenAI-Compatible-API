@@ -19,7 +19,7 @@ class OpenAICompatibleLLM:
     """
     
     def __init__(self):
-        pass
+        self.last_seed = 42
     
     @classmethod
     def INPUT_TYPES(cls):
@@ -46,6 +46,15 @@ class OpenAICompatibleLLM:
                     "min": 0.0,
                     "max": 2.0,
                     "step": 0.01
+                }),
+                "seed": ("INT", {
+                    "default": 42,
+                    "min": 0,
+                    "max": 0xffffffffffffffff,
+                    "step": 1
+                }),
+                "seed_control": (["random", "fixed", "increment", "decrement"], {
+                    "default": "random"
                 }),
             },
             "optional": {
@@ -86,11 +95,26 @@ class OpenAICompatibleLLM:
         
         return f"data:image/png;base64,{img_base64}"
     
-    def generate(self, prompt, endpoint, model, max_tokens, temperature, 
+    def generate(self, prompt, endpoint, model, max_tokens, temperature, seed, seed_control,
                  image=None, api_key=None, image_detail="auto"):
         """
         调用 OpenAI 兼容的 API 生成响应
         """
+        
+        # Handle seed control
+        if seed_control == "random":
+            import random
+            actual_seed = random.randint(0, 0xffffffffffffffff)
+        elif seed_control == "fixed":
+            actual_seed = seed
+        elif seed_control == "increment":
+            actual_seed = self.last_seed + 1
+        elif seed_control == "decrement":
+            actual_seed = max(0, self.last_seed - 1)
+        else:
+            actual_seed = seed
+        
+        self.last_seed = actual_seed
         
         # 构建消息内容
         if image is not None:
@@ -124,7 +148,8 @@ class OpenAICompatibleLLM:
                 }
             ],
             "max_tokens": max_tokens,
-            "temperature": temperature
+            "temperature": temperature,
+            "seed": actual_seed
         }
         
         # 设置请求头
