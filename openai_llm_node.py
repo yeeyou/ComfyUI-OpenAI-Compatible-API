@@ -19,7 +19,7 @@ class OpenAICompatibleLLM:
     """
     
     def __init__(self):
-        self.seed = None
+        pass
     
     @classmethod
     def INPUT_TYPES(cls):
@@ -46,15 +46,6 @@ class OpenAICompatibleLLM:
                     "min": 0.0,
                     "max": 2.0,
                     "step": 0.01
-                }),
-                "seed": ("INT", {
-                    "default": 0,
-                    "min": 0,
-                    "max": 0xffffffffffffffff,
-                    "display": "number"
-                }),
-                "seed_control": (["fixed", "increment", "decrement", "randomize"], {
-                    "default": "randomize"
                 }),
             },
             "optional": {
@@ -95,28 +86,11 @@ class OpenAICompatibleLLM:
         
         return f"data:image/png;base64,{img_base64}"
     
-    def generate(self, prompt, endpoint, model, max_tokens, temperature, seed, seed_control,
+    def generate(self, prompt, endpoint, model, max_tokens, temperature, 
                  image=None, api_key=None, image_detail="auto"):
         """
         调用 OpenAI 兼容的 API 生成响应
         """
-        
-        # 处理 seed 控制
-        if seed_control == "randomize":
-            seed = np.random.randint(0, 0xffffffffffffffff)
-        elif seed_control == "increment":
-            if self.seed is not None:
-                seed = (self.seed + 1) % 0xffffffffffffffff
-            else:
-                seed = seed
-        elif seed_control == "decrement":
-            if self.seed is not None:
-                seed = (self.seed - 1) % 0xffffffffffffffff
-            else:
-                seed = seed
-        # fixed 模式使用传入的 seed
-        
-        self.seed = seed
         
         # 构建消息内容
         if image is not None:
@@ -150,8 +124,7 @@ class OpenAICompatibleLLM:
                 }
             ],
             "max_tokens": max_tokens,
-            "temperature": temperature,
-            "seed": seed
+            "temperature": temperature
         }
         
         # 设置请求头
