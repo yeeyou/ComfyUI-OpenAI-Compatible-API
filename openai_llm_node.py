@@ -50,7 +50,7 @@ class OpenAICompatibleLLM:
                 "seed": ("INT", {
                     "default": 42,
                     "min": 0,
-                    "max": 0xffffffffffffffff,
+                    "max": 9223372036854775807,
                     "step": 1
                 }),
                 "seed_control": (["random", "fixed", "increment", "decrement"], {
@@ -104,11 +104,11 @@ class OpenAICompatibleLLM:
         # Handle seed control
         if seed_control == "random":
             import random
-            actual_seed = random.randint(0, 0xffffffffffffffff)
+            actual_seed = random.randint(0, 9223372036854775807)
         elif seed_control == "fixed":
             actual_seed = seed
         elif seed_control == "increment":
-            actual_seed = self.last_seed + 1
+            actual_seed = min(9223372036854775807, self.last_seed + 1)
         elif seed_control == "decrement":
             actual_seed = max(0, self.last_seed - 1)
         else:
