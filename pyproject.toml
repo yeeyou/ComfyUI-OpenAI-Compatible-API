@@ -1,0 +1,37 @@
+[project]
+name = "openai-compatible-api"
+description = "A ComfyUI custom node that supports OpenAI-compatible APIs, allowing it to call any large-language-model service compatible with the OpenAI API format (such as vLLM, LM Studio, Ollama, LocalAI, etc.)."
+version = "1.0.0"
+license = {file = "LICENSE"} 
+# classifiers = [
+#     # For OS-independent nodes (works on all operating systems)
+#     "Operating System :: OS Independent",
+#
+#     # OR for OS-specific nodes, specify the supported systems:
+#     "Operating System :: Microsoft :: Windows",  # Windows specific
+#     "Operating System :: POSIX :: Linux",  # Linux specific
+#     "Operating System :: MacOS",  # macOS specific
+#
+#     # GPU Accelerator support. Pick the ones that are supported by your extension.
+#     "Environment :: GPU :: NVIDIA CUDA",    # NVIDIA CUDA support
+#     "Environment :: GPU :: AMD ROCm",       # AMD ROCm support
+#     "Environment :: GPU :: Intel Arc",      # Intel Arc support
+#     "Environment :: NPU :: Huawei Ascend",  # Huawei Ascend support
+#     "Environment :: GPU :: Apple Metal",    # Apple Metal support
+# ]
+
+dependencies = ["requests", "pillow", "torch", "numpy"]
+
+[project.urls]
+Repository = "https://github.com/yeeyou/ComfyUI-OpenAI-Compatible-API"
+#  Used by Comfy Registry https://registry.comfy.org
+Documentation = "https://github.com/yeeyou/ComfyUI-OpenAI-Compatible-API/wiki"
+"Bug Tracker" = "https://github.com/yeeyou/ComfyUI-OpenAI-Compatible-API/issues"
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-OpenAI-Compatible-API"
+Icon = ""
+includes = [] 
+# "requires-comfyui" = ">=1.0.0"  # ComfyUI version compatibility
+
