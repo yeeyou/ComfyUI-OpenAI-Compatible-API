@@ -65,6 +65,9 @@ class OpenAICompatibleLLM:
                 "image_detail": (["auto", "low", "high"], {
                     "default": "auto"
                 }),
+                "enable_thinking": ("BOOLEAN", {
+                    "default": False
+                }),
             }
         }
     
@@ -96,7 +99,7 @@ class OpenAICompatibleLLM:
         return f"data:image/png;base64,{img_base64}"
     
     def generate(self, prompt, endpoint, model, max_tokens, temperature, seed, seed_control,
-                 image=None, api_key=None, image_detail="auto"):
+                 image=None, api_key=None, image_detail="auto", enable_thinking=False):
         """
         调用 OpenAI 兼容的 API 生成响应
         """
@@ -151,6 +154,9 @@ class OpenAICompatibleLLM:
             "temperature": temperature,
             "seed": actual_seed
         }
+        
+        if enable_thinking:
+            payload["chat_template_kwargs"] = {"enable_thinking": True}
         
         # 设置请求头
         headers = {
