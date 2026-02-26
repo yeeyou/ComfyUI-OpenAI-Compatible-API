@@ -52,6 +52,9 @@ pip install requests pillow torch numpy
   - `auto`: 自动选择
   - `low`: 低细节（更快，更便宜）
   - `high`: 高细节（更详细，更慢）
+- **enable_thinking**: 是否启用思考模式（默认：关闭）
+  - 启用后会在请求中添加 `chat_template_kwargs: {"enable_thinking": true}`
+  - 适用于支持思考/推理模式的模型（如 QwQ、DeepSeek-R1 等，配合 vLLM 使用）
 
 ## 使用示例
 
